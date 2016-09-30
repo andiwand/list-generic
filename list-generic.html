@@ -1,0 +1,40 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../observe-elements/observe-array.html">
+
+<dom-module id="list-generic">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+
+  <template>
+    <observe-array array="{{array}}" on-changed="_onChanged"></observer-array>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: "list-generic",
+    properties: {
+      array: {
+        type: Array,
+        notify: true
+      },
+      element: String
+    },
+    _onChanged: function(event, detail) {
+      // TODO: incremental update
+      this._rebuild();
+    },
+    _rebuild: function() {
+      $(this).empty();
+      $.each(this.array, $.proxy(function(i, e) {
+        $(this).append(
+          $("<%></%>".replace("%", this.element))
+            .prop("data", e)
+        );
+      }, this));
+    }
+  });
+</script>

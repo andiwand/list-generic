@@ -1,0 +1,9 @@
+{
+  "name": "list-generic",
+  "version": "0.0.1",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "observe-elements": "git+https://github.com/andiwand/observe-elements.git"
+  },
+  "private": true
+}
