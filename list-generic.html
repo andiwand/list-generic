@@ -4,14 +4,16 @@
 
 // TODO: avoid jquery
 <dom-module id="list-generic">
-  <style>
-    :host {
-      display: block;
-    }
-  </style>
-
   <template>
+    <style>
+      :host {
+        display: block;
+        @apply(--my-elements);
+      }
+    </style>
+
     <observe-array array="{{array}}" on-changed="_changed"></observer-array>
+    <div id="list"></div>
   </template>
 </dom-module>
 
@@ -32,15 +34,20 @@
       // TODO: incremental update
       this._rebuild();
     },
+    _clear: function() {
+      var root = Polymer.dom(this.$.list);
+      while (root.firstChild) {
+          root.removeChild(root.firstChild);
+      }
+    },
     _rebuild: function() {
       if (!this.array) return;
-      $(this).empty();
-      $.each(this.array, $.proxy(function(i, e) {
-        $(this).append(
-          $("<%></%>".replace("%", this.element))
-            .prop("data", e)
-        );
-      }, this));
+      this._clear();
+      this.array.forEach(function(e) {
+        var element = document.createElement(this.element);
+        $(element).prop("data", e);
+        Polymer.dom(this.$.list).appendChild(element);
+      }.bind(this));
     }
   });
 </script>
